@@ -1,12 +1,13 @@
-const { app, BrowserWindow, ipcMain } = require('electron/main')
-const path = require('node:path')
+const { app, BrowserWindow, ipcMain } = require('electron/main');
+const path = require('node:path');
 const { updateElectronApp } = require('update-electron-app');
-updateElectronApp();
+const log = require('electron-log');
 
-const { updateElectronApp } = require('update-electron-app');
 updateElectronApp({
-  logger: require('electron-log')
+    logger: log
 });
+
+log.info('App is starting...');
 
 const createWindow = () => {
     const win = new BrowserWindow({
@@ -15,24 +16,24 @@ const createWindow = () => {
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')
         }
-    })
+    });
 
-    win.loadFile('index.html')
-}
+    win.loadFile('index.html');
+};
 
 app.whenReady().then(() => {
-    ipcMain.handle('ping', () => 'pong')
-    createWindow()
+    ipcMain.handle('ping', () => 'pong');
+    createWindow();
 
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
-            createWindow()
+            createWindow();
         }
-    })
-})
+    });
+});
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
-        app.quit()
+        app.quit();
     }
-})
+});
