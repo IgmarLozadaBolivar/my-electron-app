@@ -3,6 +3,11 @@ const path = require('node:path')
 const { updateElectronApp } = require('update-electron-app');
 updateElectronApp();
 
+const { updateElectronApp } = require('update-electron-app');
+updateElectronApp({
+  logger: require('electron-log')
+});
+
 const createWindow = () => {
     const win = new BrowserWindow({
         width: 800,
